@@ -29,7 +29,7 @@ resource "aws_subnet" "main" {
   availability_zone = each.value.availability_zone
 }
 
-# Security Groups
+# Security Groups & Rules
 resource "aws_security_group" "main" {
   name = "n2ws-security-group"
   egress {
@@ -38,7 +38,7 @@ resource "aws_security_group" "main" {
     protocol         = "-1"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
-    prefix_list_ids  = [aws_vpc_endpoint.s3.prefix_list_id, aws_vpc_endpoint.ebs.prefix_list_id]
+    prefix_list_ids  = [aws_vpc_endpoint.s3.prefix_list_id]
   }
 }
 
@@ -48,7 +48,7 @@ resource "aws_security_group_rule" "main" {
   from_port         = each.value.port
   to_port           = each.value.port
   protocol          = each.value.protocol
-  cidr_blocks       = [aws_vpc.example.cidr_block]
+  cidr_blocks       = [aws_vpc.main.cidr_block]
   security_group_id = aws_security_group.main.id
 }
 
@@ -59,7 +59,7 @@ resource "aws_internet_gateway" "main" {
 
 # Route Table
 resource "aws_route_table" "main" {
-  vpc_id = aws_vpc.example.id
+  vpc_id = aws_vpc.main.id
 
   route {
     cidr_block = "13.55.4.79/32"
@@ -78,7 +78,7 @@ resource "aws_route_table" "main" {
 resource "aws_vpc_endpoint" "s3" {
   vpc_id         = aws_vpc.main.id
   service_name   = "com.amazonaws.${data.aws_region.current.name}.s3"
-  route_table_id = aws_route_table.main.id
+  route_table_ids = [aws_route_table.main.id]
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -122,10 +122,12 @@ resource "aws_iam_role" "main" {
   assume_role_policy = file("./policies/trust_relationship.json")
 }
 
+
+
 resource "aws_iam_role_policy" "main" {
   count = 2
   name  = "n2ws-role-policy-${count.index}"
   role  = aws_iam_role.main.id
-  policy = file("./policies/aws_policy_permissions_Enterprise_BYOL_${count.index}")
+  policy = data.local_file.policies[count.index].content
 }
 

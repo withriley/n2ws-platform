@@ -23,7 +23,7 @@ security_group_rules = {
     cidr_block = "10.230.230.0/24"
   }
   rule3 = {
-    port       = 22
+    port       = 443
     protocol   = "tcp"
     cidr_block = "10.230.230.0/24"
   }
