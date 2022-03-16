@@ -113,7 +113,7 @@ resource "aws_vpc_endpoint" "ebs" {
     aws_security_group.main.id,
   ]
 
-  subnet_ids          = keys(var.subnets)
+  subnet_ids          = [for subnet in aws_subnet.main : subnet.id]
   auto_accept         = true
   private_dns_enabled = true
 }
