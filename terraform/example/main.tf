@@ -21,9 +21,9 @@ module "n2ws-platform" {
       cidr_block = "52.63.255.188/32" # This entry points to the IP address of the Cloud Protection Manager Instance
     }
     rule2 = {
-    port       = 22
-    protocol   = "tcp"
-    cidr_block = "10.230.230.0/24" # replace with your CIDR block
+      port       = 22
+      protocol   = "tcp"
+      cidr_block = "10.230.230.0/24" # replace with your CIDR block
     }
     rule3 = {
       port       = 443

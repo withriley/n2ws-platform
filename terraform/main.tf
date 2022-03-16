@@ -31,8 +31,8 @@ resource "aws_subnet" "main" {
 
 # Security Groups & Rules
 resource "aws_security_group" "main" {
-  name = "n2ws-security-group"
-  vpc_id      = aws_vpc.main.id
+  name   = "n2ws-security-group"
+  vpc_id = aws_vpc.main.id
   egress {
     from_port        = 0
     to_port          = 0
