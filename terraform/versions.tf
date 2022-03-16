@@ -3,7 +3,7 @@ provider "aws" {
     tags = {
       Environment = var.environment
       Owner       = "RileySolutions"
-      Name = "N2WS"
+      Name        = "N2WS"
     }
   }
   region = "ap-southeast-2"

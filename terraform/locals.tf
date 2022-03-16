@@ -1,6 +1,6 @@
 locals {
-    permission_policies = [
-        "aws_policy_permissions_Enterprise_BYOL_1",
-        "aws_policy_permissions_Enterprise_BYOL_2"
-    ]
+  permission_policies = [
+    "aws_policy_permissions_Enterprise_BYOL_1",
+    "aws_policy_permissions_Enterprise_BYOL_2"
+  ]
 }

@@ -37,7 +37,7 @@ resource "aws_security_group" "main" {
     to_port          = 0
     protocol         = "-1"
     cidr_blocks      = ["0.0.0.0/0"] #tfsec:ignore:aws-vpc-no-public-egress-sgr
-    ipv6_cidr_blocks = ["::/0"] #tfsec:ignore:aws-vpc-no-public-egress-sgr
+    ipv6_cidr_blocks = ["::/0"]      #tfsec:ignore:aws-vpc-no-public-egress-sgr
     prefix_list_ids  = [aws_vpc_endpoint.s3.prefix_list_id]
   }
 }
@@ -75,15 +75,15 @@ resource "aws_route_table" "main" {
 }
 
 resource "aws_route_table_association" "main" {
-  for_each = var.subnets
+  for_each       = var.subnets
   subnet_id      = aws_subnet.main[each.key].id
   route_table_id = aws_route_table.main.id
 }
 
 # Endpoints
 resource "aws_vpc_endpoint" "s3" {
-  vpc_id         = aws_vpc.main.id
-  service_name   = "com.amazonaws.${data.aws_region.current.name}.s3"
+  vpc_id          = aws_vpc.main.id
+  service_name    = "com.amazonaws.${data.aws_region.current.name}.s3"
   route_table_ids = [aws_route_table.main.id]
   policy = jsonencode({
     "Version" : "2012-10-17",
@@ -118,14 +118,14 @@ resource "aws_vpc_endpoint" "ebs" {
 
 # S3 Bucket
 resource "aws_s3_bucket" "main" { #tfsec:ignore:aws-s3-encryption-customer-key
-  bucket = "n2ws-bucket" 
-} 
+  bucket = "n2ws-bucket"
+}
 
 resource "aws_s3_bucket_public_access_block" "main" {
-  bucket = aws_s3_bucket.main.id
-  block_public_acls   = true
-  block_public_policy = true
-  ignore_public_acls = true
+  bucket                  = aws_s3_bucket.main.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
   restrict_public_buckets = true
 }
 
@@ -139,7 +139,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "example" { #tfsec
 
   rule {
     apply_server_side_encryption_by_default {
-      sse_algorithm     = "AES256"
+      sse_algorithm = "AES256"
     }
   }
 }
@@ -152,8 +152,8 @@ resource "aws_iam_role" "main" {
 
 resource "aws_iam_role_policy" "main" {
   for_each = toset(local.permission_policies)
-  name  = "${each.value}"
-  role  = aws_iam_role.main.id
-  policy = data.local_file.policies[each.value].content
+  name     = each.value
+  role     = aws_iam_role.main.id
+  policy   = data.local_file.policies[each.value].content
 }
 
