@@ -49,7 +49,7 @@ resource "aws_security_group_rule" "main" {
   from_port         = each.value.port
   to_port           = each.value.port
   protocol          = each.value.protocol
-  cidr_blocks       = [aws_vpc.main.cidr_block]
+  cidr_blocks       = each.value.cidr_block
   security_group_id = aws_security_group.main.id
 }
 
