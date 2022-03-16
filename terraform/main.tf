@@ -131,7 +131,7 @@ resource "aws_s3_bucket" "main" { #tfsec:ignore:aws-s3-encryption-customer-key
 }
 
 resource "aws_s3_bucket_public_access_block" "main" {
-  bucket                  = tolower(aws_s3_bucket.main.id
+  bucket                  = aws_s3_bucket.main.id
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true
