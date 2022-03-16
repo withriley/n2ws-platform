@@ -127,11 +127,11 @@ resource "random_string" "random" {
 }
 
 resource "aws_s3_bucket" "main" { #tfsec:ignore:aws-s3-encryption-customer-key
-  bucket = format("n2ws-s3-backup-repository-%s", random_string.random.result)
+  bucket = lower(format("n2ws-s3-backup-repository-%s", random_string.random.result))
 }
 
 resource "aws_s3_bucket_public_access_block" "main" {
-  bucket                  = aws_s3_bucket.main.id
+  bucket                  = tolower(aws_s3_bucket.main.id
   block_public_acls       = true
   block_public_policy     = true
   ignore_public_acls      = true

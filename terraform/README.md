@@ -1,18 +1,39 @@
 <!-- BEGIN_TF_DOCS -->
-## Requirements
 
-No requirements.
 
-## Providers
+## Example
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.5.0 |
-| <a name="provider_local"></a> [local](#provider\_local) | 2.2.2 |
+```hcl
+module "n2ws-platform" {
+  source = "github.com/withriley/n2ws-platform/terraform"
 
-## Modules
+  cidr_block = "10.230.230.0/24" # replace CIDR block with your desired block
 
-No modules.
+  subnets = {
+    n2ws-subnet-a = {
+      cidr_block        = "10.230.230.0/25" # replace these also
+      availability_zone = "ap-southeast-2a"
+    }
+    n2ws-subnet-b = {
+      cidr_block        = "10.230.230.128/25"
+      availability_zone = "ap-southeast-2b"
+    }
+  }
+
+  security_group_rules = {
+    rule1 = {
+      port       = 22
+      protocol   = "tcp"
+      cidr_block = "52.63.255.188/32" # This entry points to the IP address of the Cloud Protection Manager Instance
+    }
+    rule3 = {
+      port       = 443
+      protocol   = "tcp"
+      cidr_block = "10.230.230.0/24" # replace with your CIDR block
+    }
+  }
+}
+```
 
 ## Resources
 
@@ -33,9 +54,14 @@ No modules.
 | [aws_vpc.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
 | [aws_vpc_endpoint.ebs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
+| [random_string.random](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [local_file.assume_role_policy](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
 | [local_file.policies](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
+
+## Modules
+
+No modules.
 
 ## Inputs
 
@@ -48,5 +74,8 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_bucket"></a> [bucket](#output\_bucket) | The Bucket ARN for the bucket that gets used by CPM |
+| <a name="output_role_arn"></a> [role\_arn](#output\_role\_arn) | The Role ARN for the Role that gets assumed by CPM |
 <!-- END_TF_DOCS -->
