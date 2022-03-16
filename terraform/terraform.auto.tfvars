@@ -17,11 +17,6 @@ security_group_rules = {
     protocol   = "tcp"
     cidr_block = "52.63.255.188/32"
   }
-  rule2 = {
-    port       = 22
-    protocol   = "tcp"
-    cidr_block = "10.230.230.0/24"
-  }
   rule3 = {
     port       = 443
     protocol   = "tcp"

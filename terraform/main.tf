@@ -74,6 +74,12 @@ resource "aws_route_table" "main" {
   # local route is created implicitly
 }
 
+resource "aws_route_table_association" "main" {
+  for_each = var.subnets
+  subnet_id      = aws_subnet.main[each.key].id
+  route_table_id = aws_route_table.main.id
+}
+
 # Endpoints
 resource "aws_vpc_endpoint" "s3" {
   vpc_id         = aws_vpc.main.id
@@ -138,14 +144,11 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "example" { #tfsec
   }
 }
 
-
 # IAM Role
 resource "aws_iam_role" "main" {
   name               = "n2ws-role"
   assume_role_policy = file("./policies/trust_relationship.json")
 }
-
-
 
 resource "aws_iam_role_policy" "main" {
   count = 2

@@ -19,3 +19,9 @@ variable "subnets" {
     availability_zone = string
   }))
 }
+
+variable "environment" {
+  description = "A tag to define where you are deploying your environment to"
+  type = string
+  default = "Development"
+}
