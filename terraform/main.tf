@@ -32,6 +32,7 @@ resource "aws_subnet" "main" {
 # Security Groups & Rules
 resource "aws_security_group" "main" {
   name = "n2ws-security-group"
+  vpc_id      = aws_vpc.main.id
   egress {
     from_port        = 0
     to_port          = 0
@@ -119,8 +120,12 @@ resource "aws_vpc_endpoint" "ebs" {
 }
 
 # S3 Bucket
+resource "random_string" "random" {
+  length           = 8
+}
+
 resource "aws_s3_bucket" "main" { #tfsec:ignore:aws-s3-encryption-customer-key
-  bucket = "n2ws-bucket"
+  bucket = format("n2ws-s3-backup-repository-%s", random_string.random.result)
 }
 
 resource "aws_s3_bucket_public_access_block" "main" {
