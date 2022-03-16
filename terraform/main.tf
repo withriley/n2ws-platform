@@ -147,13 +147,13 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "example" { #tfsec
 # IAM Role
 resource "aws_iam_role" "main" {
   name               = "n2ws-role"
-  assume_role_policy = file("./policies/trust_relationship.json")
+  assume_role_policy = data.local_file.assume_role_policy.content
 }
 
 resource "aws_iam_role_policy" "main" {
-  count = 2
-  name  = "n2ws-role-policy-${count.index}"
+  for_each = toset(local.permission_policies)
+  name  = "${each.value}"
   role  = aws_iam_role.main.id
-  policy = data.local_file.policies[count.index].content
+  policy = data.local_file.policies[each.value].content
 }
 
