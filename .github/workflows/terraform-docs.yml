@@ -11,9 +11,10 @@ jobs:
     - uses: actions/checkout@master
 
     - name: Render terraform docs inside the README.md and push changes back to PR branch
-      uses: terraform-docs/gh-actions@v0.11.0
+      uses: terraform-docs/gh-actions@main
       with:
-        working-dir: ./terraform,./terraform/example
+        working-dir: terraform,terraform/example
         output-file: README.md
         output-method: inject
         git-push: "true"
+        git-commit-message: "terraform-docs: automated action :sparkles:"

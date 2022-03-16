@@ -25,3 +25,8 @@ variable "environment" {
   type        = string
   default     = "Development"
 }
+
+variable "cpm_instance" {
+  description = "The CIDR block defined IP of the CPM instance"
+  type        = string
+}
