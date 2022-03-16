@@ -1,7 +1,5 @@
 data "aws_region" "current" {}
 
-
-
 data "local_file" "policies" {
   for_each = toset(local.permission_policies)
   filename = "${path.module}/policies/${each.value}.json"
