@@ -8,9 +8,7 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.head.ref }}
+    - uses: actions/checkout@master
 
     - name: Render terraform docs inside the README.md and push changes back to PR branch
       uses: terraform-docs/gh-actions@v0.11.0
