@@ -98,7 +98,7 @@ resource "aws_vpc_endpoint" "s3" {
         "Action" : [
           "s3:*"
         ],
-        "Resource" : "*"
+        "Resource" : aws_s3_bucket.main.arn
       }
     ]
   })
@@ -122,6 +122,8 @@ resource "aws_vpc_endpoint" "ebs" {
 # S3 Bucket
 resource "random_string" "random" {
   length           = 8
+  special          = true
+  override_special = "-"
 }
 
 resource "aws_s3_bucket" "main" { #tfsec:ignore:aws-s3-encryption-customer-key
