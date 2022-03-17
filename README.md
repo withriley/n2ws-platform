@@ -5,5 +5,10 @@
 # n2ws-platform
 This repo contains code and artefacts relating to the deployment of Riley's managed N2WS Cloud Protection Manager Platform
 
+## Usage instructions :sparkles:
+
+1. See the `example` given in `terraform/README.md` or in `/terraform/examples/`
+2. CFN templates are stored in `/templates` however they are reference only
+
 <!-- BEGIN_TF_DOCS -->
 <!-- END_TF_DOCS -->
