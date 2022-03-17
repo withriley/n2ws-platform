@@ -15,4 +15,4 @@ jobs:
       - name: tfsec
         uses: aquasecurity/tfsec-action@master
         with:
-          additional_args: --minimum-severity HIGH
+          additional_args: "--minimum-severity HIGH"
