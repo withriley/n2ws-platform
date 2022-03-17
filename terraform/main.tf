@@ -30,10 +30,10 @@ resource "aws_subnet" "main" {
 }
 
 # Security Groups & Rules
-resource "aws_security_group" "main" {
+resource "aws_security_group" "main" { #tfsec:ignore:aws-vpc-add-description-to-security-group
   name   = "n2ws-security-group"
   vpc_id = aws_vpc.main.id
-  egress {
+  egress { #tfsec:ignore:aws-vpc-add-description-to-security-group-rule
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
@@ -126,7 +126,7 @@ resource "random_string" "random" {
   override_special = "-"
 }
 
-resource "aws_s3_bucket" "main" { #tfsec:ignore:aws-s3-encryption-customer-key
+resource "aws_s3_bucket" "main" { #tfsec:ignore:aws-s3-encryption-customer-key #tfsec:ignore:aws-s3-enable-bucket-logging #tfsec:ignore:aws-s3-enable-versioning
   bucket = lower(format("n2ws-s3-backup-repository-%s", random_string.random.result))
 }
 
