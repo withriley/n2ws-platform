@@ -5,7 +5,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_n2ws-platform"></a> [n2ws-platform](#module\_n2ws-platform) | github.com/withriley/n2ws-platform/terraform | n/a |
+| <a name="module_n2ws-platform"></a> [n2ws-platform](#module\_n2ws-platform) | ../ | n/a |
 
 ## Inputs
 

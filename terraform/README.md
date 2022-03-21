@@ -5,7 +5,7 @@
 
 ```hcl
 module "n2ws-platform" {
-  source = "github.com/withriley/n2ws-platform/terraform"
+  source = "../"
 
   cidr_block = "10.230.230.0/24" # replace CIDR block with your desired block
 
@@ -19,6 +19,8 @@ module "n2ws-platform" {
       availability_zone = "ap-southeast-2b"
     }
   }
+
+  cpm_instance = "52.63.255.188/32"
 
   security_group_rules = {
     rule1 = {
@@ -59,6 +61,7 @@ module "n2ws-platform" {
 | [aws_vpc.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
 | [aws_vpc_endpoint.ebs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [aws_vpc_endpoint.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
+| [random_string.externalid](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [random_string.random](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [local_file.assume_role_policy](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
@@ -83,5 +86,6 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_bucket"></a> [bucket](#output\_bucket) | The Bucket ARN for the bucket that gets used by CPM |
+| <a name="output_externalid"></a> [externalid](#output\_externalid) | The ExternalID to be used for STS for the Assume Role policy for CPM |
 | <a name="output_role_arn"></a> [role\_arn](#output\_role\_arn) | The Role ARN for the Role that gets assumed by CPM |
 <!-- END_TF_DOCS -->
