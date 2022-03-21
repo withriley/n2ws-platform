@@ -1,5 +1,5 @@
 module "n2ws-platform" {
-  source = "github.com/withriley/n2ws-platform/terraform"
+  source = "../"
 
   cidr_block = "10.230.230.0/24" # replace CIDR block with your desired block
 
@@ -13,6 +13,8 @@ module "n2ws-platform" {
       availability_zone = "ap-southeast-2b"
     }
   }
+
+  cpm_instance = "52.63.255.188/32"
 
   security_group_rules = {
     rule1 = {

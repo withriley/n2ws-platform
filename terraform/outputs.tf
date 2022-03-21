@@ -7,3 +7,8 @@ output "bucket" {
   description = "The Bucket ARN for the bucket that gets used by CPM"
   value       = aws_s3_bucket.main.arn
 }
+
+output "externalid" {
+  value = random_string.externalid.result
+  description = "The ExternalID to be used for STS for the Assume Role policy for CPM"
+}

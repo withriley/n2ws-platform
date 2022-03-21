@@ -49,7 +49,7 @@ resource "aws_security_group_rule" "main" {
   from_port         = each.value.port
   to_port           = each.value.port
   protocol          = each.value.protocol
-  cidr_blocks       = each.value.cidr_block
+  cidr_blocks       = [each.value.cidr_block]
   security_group_id = aws_security_group.main.id
 }
 
@@ -68,7 +68,7 @@ resource "aws_route_table" "main" {
   }
 
   route {
-    cidr_block = "52.63.255.188/32"
+    cidr_block = var.cpm_instance
     gateway_id = aws_internet_gateway.main.id
   }
 
@@ -126,6 +126,12 @@ resource "random_string" "random" {
   override_special = "-"
 }
 
+resource "random_string" "externalid" {
+  length           = 8
+  special          = false
+  override_special = "-"
+}
+
 resource "aws_s3_bucket" "main" { #tfsec:ignore:aws-s3-encryption-customer-key #tfsec:ignore:aws-s3-enable-bucket-logging #tfsec:ignore:aws-s3-enable-versioning
   bucket = lower(format("n2ws-s3-backup-repository-%s", random_string.random.result))
 }
@@ -156,7 +162,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "example" { #tfsec
 # IAM Role
 resource "aws_iam_role" "main" {
   name               = "n2ws-role"
-  assume_role_policy = data.local_file.assume_role_policy.content
+  assume_role_policy = templatefile("${path.module}/policies/trust_relationship.json", { externalid = "eKgecVkyYoqVKaTF"})
 }
 
 resource "aws_iam_role_policy" "main" {

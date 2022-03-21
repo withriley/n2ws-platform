@@ -8,3 +8,4 @@ data "local_file" "policies" {
 data "local_file" "assume_role_policy" {
   filename = "${path.module}/policies/trust_relationship.json"
 }
+
