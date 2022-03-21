@@ -96,9 +96,7 @@
         "ssm:SendCommand",
         "ssm:GetCommandInvocation"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
@@ -116,9 +114,7 @@
         "rds:DeleteDBCluster",
         "rds:DeleteDBInstance"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
@@ -137,20 +133,13 @@
         "ec2:StopInstances",
         "iam:PassRole"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
       "Sid": "RecoveryDR",
-      "Action": [
-        "kms:ReEncryptFrom",
-        "kms:ReEncryptTo"
-      ],
-      "Resource": [
-        "*"
-      ],
+      "Action": ["kms:ReEncryptFrom", "kms:ReEncryptTo"],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
@@ -159,9 +148,7 @@
         "rds:RestoreDBInstanceFromDBSnapshot",
         "rds:RestoreDBClusterFromSnapshot"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
@@ -173,9 +160,7 @@
         "sns:SetTopicAttributes",
         "sns:Subscribe"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
@@ -184,9 +169,7 @@
         "rds:ModifyDBSnapshotAttribute",
         "rds:ModifyDBClusterSnapshotAttribute"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
@@ -198,9 +181,7 @@
         "redshift:DeleteClusterSnapshot",
         "redshift:RestoreFromClusterSnapshot"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
@@ -228,9 +209,7 @@
         "dynamodb:UntagResource",
         "dynamodb:RestoreTableFromBackup"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     }
   ]

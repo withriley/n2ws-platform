@@ -1,16 +1,12 @@
 /*
-All elements encrypted where possible
---------------------------------------
-1. Role for N2WS 
-2. S3 Bucket for N2WS backup storage
-4. InternetGateway	
-5. Subnet 
-6. Security Group
-7. Routes
-8. RouteTable
-9. S3 Gateway Endpoint
-10. EBS API Endpoint
-11. VPC w/ Flow Logs Enabled (capped retention)
+#              /$$$$$$                         
+#             /$$__  $$                        
+#   /$$$$$$$ |__/  \ $$ /$$  /$$  /$$  /$$$$$$$
+#  | $$__  $$  /$$$$$$/| $$ | $$ | $$ /$$_____/
+#  | $$  \ $$ /$$____/ | $$ | $$ | $$|  $$$$$$ 
+#  | $$  | $$| $$      | $$ | $$ | $$ \____  $$
+#  | $$  | $$| $$$$$$$$|  $$$$$/$$$$/ /$$$$$$$/
+#  |__/  |__/|________/ \_____/\___/ |_______/ 
 */
 
 # VPCs
@@ -21,12 +17,44 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
 }
 
+# VPC Flow Logs
+
+resource "aws_flow_log" "main" {
+  iam_role_arn    = aws_iam_role.flow_logs.arn
+  log_destination = aws_cloudwatch_log_group.flow_logs.arn
+  traffic_type    = "ALL"
+  vpc_id          = aws_vpc.main.id
+  log_format      = "$${version} $${account-id} $${interface-id} $${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${log-status}"
+}
+
+resource "aws_cloudwatch_log_group" "flow_logs" {
+  name              = "n2ws-flow-logs"
+  retention_in_days = 14
+}
+
+resource "aws_iam_role" "flow_logs" {
+  name = "n2ws-flow-logs"
+
+  assume_role_policy = file("${path.module}/policies/aws_flow_logs_trust_relationship.json")
+}
+
+resource "aws_iam_role_policy" "flow_logs" {
+  name = "n2ws-flow-logs"
+  role = aws_iam_role.flow_logs.id
+
+  policy = file("${path.module}/policies/aws_flow_logs_policy.json")
+}
+
 # Subnets
 resource "aws_subnet" "main" {
   for_each          = var.subnets
   vpc_id            = aws_vpc.main.id
   cidr_block        = each.value.cidr_block
   availability_zone = each.value.availability_zone
+  map_public_ip_on_launch = true
+  tags = {
+    name = each.key
+  }
 }
 
 # Security Groups & Rules
@@ -86,23 +114,8 @@ resource "aws_vpc_endpoint" "s3" {
   vpc_id          = aws_vpc.main.id
   service_name    = "com.amazonaws.${data.aws_region.current.name}.s3"
   route_table_ids = [aws_route_table.main.id]
-  policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Sid" : "AllowAll",
-        "Effect" : "Allow",
-        "Principal" : {
-          "AWS" : "*"
-        },
-        "Action" : [
-          "s3:*"
-        ],
-        "Resource" : aws_s3_bucket.main.arn
-      }
-    ]
-  })
-  auto_accept = true
+  policy          = file("${path.module}/policies/vpc_endpoint_policy.json")
+  auto_accept     = true
 }
 
 resource "aws_vpc_endpoint" "ebs" {
@@ -162,7 +175,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "example" { #tfsec
 # IAM Role
 resource "aws_iam_role" "main" {
   name               = "n2ws-role"
-  assume_role_policy = templatefile("${path.module}/policies/trust_relationship.json", { externalid = "eKgecVkyYoqVKaTF"})
+  assume_role_policy = templatefile("${path.module}/policies/trust_relationship.json", { externalid = "eKgecVkyYoqVKaTF" })
 }
 
 resource "aws_iam_role_policy" "main" {

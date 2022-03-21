@@ -79,9 +79,7 @@
         "ec2:AssociateTransitGatewayRouteTable",
         "ec2:EnableTransitGatewayRouteTablePropagation"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
@@ -111,27 +109,19 @@
         "rds:ModifyDBInstance",
         "rds-db:connect"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
       "Sid": "Archive",
-      "Action": [
-        "s3:RestoreObject"
-      ],
-      "Resource": [
-        "*"
-      ],
+      "Action": ["s3:RestoreObject"],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
       "Sid": "CPMWorkerTermination",
       "Action": "ec2:TerminateInstances",
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow",
       "Condition": {
         "StringEquals": {
@@ -147,9 +137,7 @@
         "rds:StartDBInstance",
         "rds:StopDBInstance"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
@@ -178,9 +166,7 @@
         "backup:DescribeCopyJob",
         "iam:ListRoles"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
@@ -190,19 +176,13 @@
         "ec2:GetConsoleOutput",
         "ce:GetCostAndUsage"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
       "Sid": "SupportedServiceRegions",
-      "Action": [
-        "ssm:GetParametersByPath"
-      ],
-      "Resource": [
-        "*"
-      ],
+      "Action": ["ssm:GetParametersByPath"],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
@@ -218,9 +198,7 @@
         "s3:PutObjectAcl",
         "s3:PutObjectTagging"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
@@ -240,43 +218,25 @@
         "fsx:ListTagsForResource",
         "fsx:TagResource"
       ],
-      "Resource": [
-        "*"
-      ],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
       "Sid": "CBT",
-      "Action": [
-        "ebs:ListChangedBlocks",
-        "ebs:ListSnapshotBlocks"
-      ],
-      "Resource": [
-        "*"
-      ],
+      "Action": ["ebs:ListChangedBlocks", "ebs:ListSnapshotBlocks"],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
       "Sid": "FLR",
-      "Action": [
-        "ebs:ListSnapshotBlocks",
-        "ebs:GetSnapshotBlock"
-      ],
-      "Resource": [
-        "*"
-      ],
+      "Action": ["ebs:ListSnapshotBlocks", "ebs:GetSnapshotBlock"],
+      "Resource": ["*"],
       "Effect": "Allow"
     },
     {
       "Sid": "SapHanaDB",
-      "Action": [
-        "ssm:PutParameter",
-        "ssm:GetParameter",
-        "ssm:DeleteParameter"
-      ],
-      "Resource": [
-        "*"
-      ],
+      "Action": ["ssm:PutParameter", "ssm:GetParameter", "ssm:DeleteParameter"],
+      "Resource": ["*"],
       "Effect": "Allow"
     }
   ]

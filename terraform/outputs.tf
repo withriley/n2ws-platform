@@ -9,6 +9,6 @@ output "bucket" {
 }
 
 output "externalid" {
-  value = random_string.externalid.result
+  value       = random_string.externalid.result
   description = "The ExternalID to be used for STS for the Assume Role policy for CPM"
 }
