@@ -38,7 +38,7 @@ resource "aws_iam_role" "flow_logs" {
   assume_role_policy = file("${path.module}/policies/aws_flow_logs_trust_relationship.json")
 }
 
-resource "aws_iam_role_policy" "flow_logs" {
+resource "aws_iam_role_policy" "flow_logs" { #tfsec:ignore:aws-iam-no-policy-wildcards
   name = "n2ws-flow-logs"
   role = aws_iam_role.flow_logs.id
 
