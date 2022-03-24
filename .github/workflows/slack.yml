@@ -5,10 +5,11 @@ on:
 jobs:
    slack:
     name: Slack alert
-		if: ${{ github.base_ref != 'bot/**' }}
+
     runs-on: ubuntu-latest
     steps:
       - name: Notify slack
+				if: ${{ github.base_ref != 'bot/**' }}
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         uses: pullreminders/slack-action@master
