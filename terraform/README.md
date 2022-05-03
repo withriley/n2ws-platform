@@ -5,29 +5,32 @@
 
 ```hcl
 module "n2ws" {
-  source = "github.com/withriley/n2ws-platform/terraform"
+  #source = "github.com/withriley/n2ws-platform/terraform"
+  source = "../"
 
-  cidr_block = var.cidr_block # replace CIDR block with your desired block
+  cidr_block = var.cidr_block # replace CIDR block with your desired CIDR block for the VPC you are creating
 
   subnets = var.subnets
 
-  cpm_instance = var.cpm_instance
+  environment = var.environment
+
+  cpm_instance = var.cpm_instance # This entry is the CIDR representation of the Cloud Protection Manager Instance
 
   security_group_rules = {
     rule1 = {
       port       = 22
       protocol   = "tcp"
-      cidr_block = var.cpm_instance # This entry points to the IP address of the Cloud Protection Manager Instance
+      cidr_block = var.cpm_instance # This entry is the CIDR representation of the Cloud Protection Manager Instance
     }
     rule2 = {
       port       = 22
       protocol   = "tcp"
-      cidr_block = var.cidr_block # replace with your CIDR block
+      cidr_block = var.cidr_block 
     }
     rule3 = {
       port       = 443
       protocol   = "tcp"
-      cidr_block = var.cidr_block # replace with your CIDR block
+      cidr_block = var.cidr_block
     }
   }
 }
@@ -58,6 +61,7 @@ module "n2ws" {
 | [aws_vpc_endpoint.s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc_endpoint) | resource |
 | [random_string.externalid](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [random_string.random](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
+| [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [local_file.assume_role_policy](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
 | [local_file.policies](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
@@ -70,11 +74,11 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_cidr_block"></a> [cidr\_block](#input\_cidr\_block) | The CIDR block to use for N2WS resources - make sure this doesn't clas with anything else in cloud or on-prem | `string` | n/a | yes |
+| <a name="input_cidr_block"></a> [cidr\_block](#input\_cidr\_block) | The CIDR block for the VPC you are creating - to use for N2WS resources - make sure this doesn't clash with any VPCs you are creating that you might want to peer with. | `string` | n/a | yes |
 | <a name="input_cpm_instance"></a> [cpm\_instance](#input\_cpm\_instance) | The CIDR block defined IP of the CPM instance | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | A tag to define where you are deploying your environment to | `string` | `"Development"` | no |
 | <a name="input_security_group_rules"></a> [security\_group\_rules](#input\_security\_group\_rules) | A map of rules for security group ingresses | <pre>map(object({<br>    port       = number<br>    protocol   = string<br>    cidr_block = string<br>  }))</pre> | n/a | yes |
-| <a name="input_subnets"></a> [subnets](#input\_subnets) | A map defining subnets for the VPC | <pre>map(object({<br>    cidr_block        = string<br>    availability_zone = string<br>  }))</pre> | n/a | yes |
+| <a name="input_subnets"></a> [subnets](#input\_subnets) | A map defining subnets for the VPC | <pre>map(object({<br>    cidr_block        = string<br>  }))</pre> | n/a | yes |
 
 ## Outputs
 

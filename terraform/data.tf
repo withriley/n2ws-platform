@@ -9,3 +9,6 @@ data "local_file" "assume_role_policy" {
   filename = "${path.module}/policies/trust_relationship.json"
 }
 
+data "aws_availability_zones" "available" {
+  state = "available"
+}

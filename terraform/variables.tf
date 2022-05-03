@@ -1,5 +1,5 @@
 variable "cidr_block" {
-  description = "The CIDR block to use for N2WS resources - make sure this doesn't clas with anything else in cloud or on-prem"
+  description = "The CIDR block for the VPC you are creating - to use for N2WS resources - make sure this doesn't clash with any VPCs you are creating that you might want to peer with."
   type        = string
 }
 
@@ -16,7 +16,6 @@ variable "subnets" {
   description = "A map defining subnets for the VPC"
   type = map(object({
     cidr_block        = string
-    availability_zone = string
   }))
 }
 

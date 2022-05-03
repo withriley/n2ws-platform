@@ -12,6 +12,11 @@ variable "subnets" {
   description = "A map defining subnets for the VPC"
   type = map(object({
     cidr_block        = string
-    availability_zone = string
   }))
+}
+
+variable "environment" {
+  description = "A tag to define where you are deploying your environment to"
+  type        = string
+  default     = "Development"
 }
