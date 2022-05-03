@@ -91,11 +91,6 @@ resource "aws_route_table" "main" {
   vpc_id = aws_vpc.main.id
 
   route {
-    cidr_block = "13.55.4.79/32"
-    gateway_id = aws_internet_gateway.main.id
-  }
-
-  route {
     cidr_block = var.cpm_instance
     gateway_id = aws_internet_gateway.main.id
   }
