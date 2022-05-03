@@ -90,7 +90,7 @@ resource "aws_internet_gateway" "main" {
 resource "aws_route_table" "main" {
   vpc_id = aws_vpc.main.id
 
-  dynamic route {
+  dynamic "route" {
     for_each = var.is_external ? toset([0]) : null
     content {
       cidr_block = var.cpm_instance
