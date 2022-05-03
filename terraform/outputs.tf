@@ -12,3 +12,9 @@ output "externalid" {
   value       = random_string.externalid.result
   description = "The ExternalID to be used for STS for the Assume Role policy for CPM"
 }
+
+
+output "vpc_id" {
+  value       = aws_vpc.main.id
+  description = "The ID for the N2WS VPC"
+}
