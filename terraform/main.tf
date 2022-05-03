@@ -91,10 +91,10 @@ resource "aws_route_table" "main" {
   vpc_id = aws_vpc.main.id
 
   dynamic "route" {
-    for_each = var.is_external ? toset([0]) : null
+    for_each = var.is_external ? [1] : []
     content {
       cidr_block = var.cpm_instance
-      gateway_id = var.is_external ? aws_internet_gateway.main.id : null
+      gateway_id = aws_internet_gateway.main.id
     }
   }
   # local route is created implicitly
