@@ -88,4 +88,5 @@ No modules.
 | <a name="output_bucket"></a> [bucket](#output\_bucket) | The Bucket ARN for the bucket that gets used by CPM |
 | <a name="output_externalid"></a> [externalid](#output\_externalid) | The ExternalID to be used for STS for the Assume Role policy for CPM |
 | <a name="output_role_arn"></a> [role\_arn](#output\_role\_arn) | The Role ARN for the Role that gets assumed by CPM |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The ID for the N2WS VPC |
 <!-- END_TF_DOCS -->
