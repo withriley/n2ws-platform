@@ -1,3 +1,9 @@
+variable "is_external"{
+  type = bool 
+  description = "Defines whether the connection is external to a CPM hosted on the internet or another account, or local over VPC peers. Default is True"
+  default = true
+}
+
 variable "cidr_block" {
   description = "The CIDR block for the VPC you are creating - to use for N2WS resources - make sure this doesn't clash with any VPCs you are creating that you might want to peer with."
   type        = string
