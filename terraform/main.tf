@@ -51,7 +51,7 @@ resource "aws_subnet" "main" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = each.value.cidr_block
   availability_zone       = data.aws_availability_zones.available.names[index(keys(var.subnets), each.key)]
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = var.is_external ? true : false
   tags = {
     name = each.key
   }
@@ -83,6 +83,7 @@ resource "aws_security_group_rule" "main" {
 
 # Internet Gateway
 resource "aws_internet_gateway" "main" {
+  count = var.is_external ? 1 : 0
   vpc_id = aws_vpc.main.id
 }
 
