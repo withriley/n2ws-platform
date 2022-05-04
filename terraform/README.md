@@ -89,6 +89,7 @@ No modules.
 | <a name="output_externalid"></a> [externalid](#output\_externalid) | The ExternalID to be used for STS for the Assume Role policy for CPM |
 | <a name="output_role_arn"></a> [role\_arn](#output\_role\_arn) | The Role ARN for the Role that gets assumed by CPM |
 | <a name="output_route_table_id"></a> [route\_table\_id](#output\_route\_table\_id) | The ID for the N2WS VPC route table |
+| <a name="output_s3_prefix_list"></a> [s3\_prefix\_list](#output\_s3\_prefix\_list) | The ID for the Prefix List for S3 |
 | <a name="output_vpc_cidr"></a> [vpc\_cidr](#output\_vpc\_cidr) | The CIDR range for the N2WS VPC |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The ID for the N2WS VPC |
 <!-- END_TF_DOCS -->
