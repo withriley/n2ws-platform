@@ -23,3 +23,8 @@ output "route_table_id" {
   value = aws_route_table.main.id
   description = "The ID for the N2WS VPC route table"
 }
+
+output "vpc_cidr" {
+  value = aws_vpc.main.cidr_block
+  description = "The CIDR range for the N2WS VPC"
+}
