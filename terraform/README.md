@@ -79,11 +79,7 @@ No modules.
 | <a name="input_environment"></a> [environment](#input\_environment) | A tag to define where you are deploying your environment to | `string` | `"Development"` | no |
 | <a name="input_is_external"></a> [is\_external](#input\_is\_external) | Defines whether the connection is external to a CPM hosted on the internet or another account, or local over VPC peers. Default is True | `bool` | `true` | no |
 | <a name="input_security_group_rules"></a> [security\_group\_rules](#input\_security\_group\_rules) | A map of rules for security group ingresses | <pre>map(object({<br>    port       = number<br>    protocol   = string<br>    cidr_block = string<br>  }))</pre> | n/a | yes |
-<<<<<<< HEAD
-| <a name="input_subnets"></a> [subnets](#input\_subnets) | A map defining subnets for the VPC | <pre>map(object({<br>    cidr_block        = string<br>  }))</pre> | n/a | yes |
-=======
 | <a name="input_subnets"></a> [subnets](#input\_subnets) | A map defining subnets for the VPC | <pre>map(object({<br>    cidr_block = string<br>  }))</pre> | n/a | yes |
->>>>>>> d5e3ff5 (:sparkles: added trust relationship option)
 | <a name="input_trust_relationship"></a> [trust\_relationship](#input\_trust\_relationship) | The AWS Account ID of the account that hosts the CPM and will need access into the policies | `any` | n/a | yes |
 
 ## Outputs
