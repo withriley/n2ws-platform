@@ -11,7 +11,7 @@ variable "cpm_instance" {
 variable "subnets" {
   description = "A map defining subnets for the VPC"
   type = map(object({
-    cidr_block        = string
+    cidr_block = string
   }))
 }
 

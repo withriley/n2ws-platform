@@ -83,7 +83,7 @@ resource "aws_security_group_rule" "main" {
 
 # Internet Gateway
 resource "aws_internet_gateway" "main" {
-  count = var.is_external ? 1 : 0
+  count  = var.is_external ? 1 : 0
   vpc_id = aws_vpc.main.id
 }
 

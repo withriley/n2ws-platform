@@ -1,7 +1,7 @@
-variable "is_external"{
-  type = bool 
+variable "is_external" {
+  type        = bool
   description = "Defines whether the connection is external to a CPM hosted on the internet or another account, or local over VPC peers. Default is True"
-  default = true
+  default     = true
 }
 
 variable "cidr_block" {
@@ -21,7 +21,7 @@ variable "security_group_rules" {
 variable "subnets" {
   description = "A map defining subnets for the VPC"
   type = map(object({
-    cidr_block        = string
+    cidr_block = string
   }))
 }
 

@@ -19,7 +19,7 @@ module "n2ws" {
     rule2 = {
       port       = 22
       protocol   = "tcp"
-      cidr_block = var.cidr_block 
+      cidr_block = var.cidr_block
     }
     rule3 = {
       port       = 443

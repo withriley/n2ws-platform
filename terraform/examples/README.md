@@ -14,7 +14,7 @@
 | <a name="input_cidr_block"></a> [cidr\_block](#input\_cidr\_block) | The CIDR block to use for N2WS resources - make sure this doesn't clas with anything else in cloud or on-prem | `string` | n/a | yes |
 | <a name="input_cpm_instance"></a> [cpm\_instance](#input\_cpm\_instance) | The CIDR block defined IP of the CPM instance | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | A tag to define where you are deploying your environment to | `string` | `"Development"` | no |
-| <a name="input_subnets"></a> [subnets](#input\_subnets) | A map defining subnets for the VPC | <pre>map(object({<br>    cidr_block        = string<br>  }))</pre> | n/a | yes |
+| <a name="input_subnets"></a> [subnets](#input\_subnets) | A map defining subnets for the VPC | <pre>map(object({<br>    cidr_block = string<br>  }))</pre> | n/a | yes |
 
 ## Outputs
 

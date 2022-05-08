@@ -20,16 +20,16 @@ output "vpc_id" {
 }
 
 output "route_table_id" {
-  value = aws_route_table.main.id
+  value       = aws_route_table.main.id
   description = "The ID for the N2WS VPC route table"
 }
 
 output "vpc_cidr" {
-  value = aws_vpc.main.cidr_block
+  value       = aws_vpc.main.cidr_block
   description = "The CIDR range for the N2WS VPC"
 }
 
 output "s3_prefix_list" {
-  value = aws_vpc_endpoint.s3.prefix_list_id
+  value       = aws_vpc_endpoint.s3.prefix_list_id
   description = "The ID for the Prefix List for S3"
 }
