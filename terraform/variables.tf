@@ -35,3 +35,7 @@ variable "cpm_instance" {
   description = "The CIDR block defined IP of the CPM instance"
   type        = string
 }
+
+variable "trust_relationship" {
+  description = "The AWS Account ID of the account that hosts the CPM and will need access into the policies"
+}

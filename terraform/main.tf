@@ -173,7 +173,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "example" { #tfsec
 # IAM Role
 resource "aws_iam_role" "main" {
   name               = "n2ws-role"
-  assume_role_policy = templatefile("${path.module}/policies/trust_relationship.json", { externalid = random_string.externalid.result })
+  assume_role_policy = templatefile("${path.module}/policies/trust_relationship.json", { externalid = random_string.externalid.result, trust_relationship = var.trust_relationship })
 }
 
 resource "aws_iam_role_policy" "main" {
