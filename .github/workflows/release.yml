@@ -1,27 +1,26 @@
-on:
-  push:
-    # Sequence of patterns matched against refs/tags
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+name: Create Monthly Release
 
-name: Create Release
+on:
+  schedule:
+    - cron: '0 0 1 * *' # Trigger on the 1st of every month at midnight
 
 jobs:
-  build:
-    name: Create Release
+  create-release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
-          body: |
-            Release for ${{ github.ref }}
-          draft: false
-          prerelease: false
+
+      - name: Set up Git
+        run: |
+          git config user.name "Emile Hofsink"
+          git config user.email "emile.hofsink@withriley.com"
+
+      - name: Create release
+        run: |
+          version=$(date +"%y.%m")
+          tag="v$(date +"%y.%m")"
+          body="New release for v${version}"
+          git tag v${version}
+          git push origin v${version}
+          curl --data '{"tag_name": "'"v${version}"'", "name": "'"v${version}"'", "body": "'"New release for ${tag}"'"}' -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Content-Type: application/json" -X POST https://api.github.com/repos/withriley/n2ws-platform/releases
