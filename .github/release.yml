@@ -1,0 +1,26 @@
+name: Create Monthly Release
+
+on:
+  schedule:
+    - cron: '0 0 1 * *' # Trigger on the 1st of every month at midnight
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        run: |
+          git config user.name "Emile Hofsink"
+          git config user.email "emile.hofsink@withriley.com"
+
+      - name: Create release
+        run: |
+          version=$(date +"%y.%m")
+          tag="v2023-02-28"
+          body="New release for v20230228"
+          git tag v20230228
+          git push origin v20230228
+          curl --data '{"tag_name": "'"v20230228"'", "name": "'"v20230228"'", "body": "'"Release 2023-02-28"'"}' -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Content-Type: application/json" -X POST https://api.github.com/repos/withriley/n2ws-platform/releases
