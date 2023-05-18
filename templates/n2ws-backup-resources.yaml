@@ -116,12 +116,14 @@ Resources:
                   - ec2:ResetSnapshotAttribute
                   - ec2:CreateImage
                   - ec2:CopyImage
+                  - ec2:CreateVolume
                   - ec2:DescribeVpcs
                   - ec2:ModifyImageAttribute
                   - ec2:RegisterImage
                   - ec2:DeregisterImage
                   - ec2:AuthorizeSecurityGroupEgress
                   - ec2:AuthorizeSecurityGroupIngress
+                  - ec2:RunInstances
                   - rds:DescribeDBInstances
                   - rds:DescribeDBClusters
                   - rds:DescribeDBClusterParameterGroups
@@ -132,6 +134,13 @@ Resources:
                   - rds:DescribeDBSnapshots
                   - rds:DescribeDBSubnetGroups
                   - rds:DescribeOptionGroups
+                  - rds:ModifyDBSnapshotAttribute
+                  - rds:CopyDBSnapshot
+                  - rds:DeleteDBSnapshot
+                  - rds:AddTagsToResource
+                  - rds:CopyDBClusterSnapshot
+                  - rds:CreateDBInstance
+                  - rds:DescribeDBEngineVersions
                   - redshift:DescribeClusterParameterGroups
                   - redshift:DescribeClusterParameters
                   - redshift:DescribeClusterSnapshots
@@ -151,6 +160,8 @@ Resources:
                   - kms:ListAliases
                   - kms:CreateGrant
                   - kms:GenerateDataKeyWithoutPlaintext
+                  - kms:ReEncryptFrom
+                  - kms:ReEncryptTo
                   - sts:AssumeRole
                   - cloudwatch:GetMetricStatistics
                   - ec2:DescribeNetworkInterfaces
