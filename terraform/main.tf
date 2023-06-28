@@ -194,18 +194,7 @@ resource "aws_iam_instance_profile" "main" {
 
 resource "aws_iam_role" "cpm" {
   name               = "cpm-role"
-  assume_role_policy = {
-    "Version"   : "2012-10-17",
-    "Statement" : [
-      {
-        "Action"    : "sts:AssumeRole",
-        "Effect"    : "Allow",
-        "Principal" : {
-          "Service" : "ec2.amazonaws.com"
-        }
-      }
-    ]
-  })
+  assume_role_policy = data.local_file.cpm_trust_relationship.content
 }
 
 # Add policies to the role - from JSON file in policies/aws_cpm_instance_profile.json

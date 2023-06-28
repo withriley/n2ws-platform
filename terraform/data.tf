@@ -16,3 +16,7 @@ data "aws_availability_zones" "available" {
 data "local_file" "cpm_instance_profile" {
   filename = "${path.module}/policies/aws_cpm_instance_profile.json"
 }
+
+data "local_file" "cpm_trust_relationship" {
+  filename = "${path.module}/policies/aws_cpm_trust_relationship.json"
+}
