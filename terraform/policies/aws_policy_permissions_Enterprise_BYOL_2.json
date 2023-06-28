@@ -9,6 +9,7 @@
         "cloudformation:DeleteStack",
         "cloudformation:DescribeStacks",
         "cloudformation:DescribeStackEvents",
+        "cloudformation:ListStacks",
         "ec2:DescribeVpcAttribute",
         "ec2:DescribeDhcpOptions",
         "ec2:DescribeInternetGateways",
@@ -77,9 +78,16 @@
         "ec2:CreateVpcPeeringConnection",
         "ec2:AcceptVpcPeeringConnection",
         "ec2:AssociateTransitGatewayRouteTable",
-        "ec2:EnableTransitGatewayRouteTablePropagation"
+        "ec2:EnableTransitGatewayRouteTablePropagation",
+        "ec2:CreateTransitGatewayPrefixListReference",
+        "ec2:DescribeManagedPrefixLists",
+        "ec2:GetManagedPrefixListEntries",
+        "ec2:CreateManagedPrefixList",
+        "ec2:GetManagedPrefixListAssociations"
       ],
-      "Resource": ["*"],
+      "Resource": [
+        "*"
+      ],
       "Effect": "Allow"
     },
     {
@@ -109,19 +117,27 @@
         "rds:ModifyDBInstance",
         "rds-db:connect"
       ],
-      "Resource": ["*"],
+      "Resource": [
+        "*"
+      ],
       "Effect": "Allow"
     },
     {
       "Sid": "Archive",
-      "Action": ["s3:RestoreObject"],
-      "Resource": ["*"],
+      "Action": [
+        "s3:RestoreObject"
+      ],
+      "Resource": [
+        "*"
+      ],
       "Effect": "Allow"
     },
     {
       "Sid": "CPMWorkerTermination",
       "Action": "ec2:TerminateInstances",
-      "Resource": ["*"],
+      "Resource": [
+        "*"
+      ],
       "Effect": "Allow",
       "Condition": {
         "StringEquals": {
@@ -137,7 +153,9 @@
         "rds:StartDBInstance",
         "rds:StopDBInstance"
       ],
-      "Resource": ["*"],
+      "Resource": [
+        "*"
+      ],
       "Effect": "Allow"
     },
     {
@@ -166,7 +184,9 @@
         "backup:DescribeCopyJob",
         "iam:ListRoles"
       ],
-      "Resource": ["*"],
+      "Resource": [
+        "*"
+      ],
       "Effect": "Allow"
     },
     {
@@ -176,13 +196,19 @@
         "ec2:GetConsoleOutput",
         "ce:GetCostAndUsage"
       ],
-      "Resource": ["*"],
+      "Resource": [
+        "*"
+      ],
       "Effect": "Allow"
     },
     {
       "Sid": "SupportedServiceRegions",
-      "Action": ["ssm:GetParametersByPath"],
-      "Resource": ["*"],
+      "Action": [
+        "ssm:GetParametersByPath"
+      ],
+      "Resource": [
+        "*"
+      ],
       "Effect": "Allow"
     },
     {
@@ -198,7 +224,9 @@
         "s3:PutObjectAcl",
         "s3:PutObjectTagging"
       ],
-      "Resource": ["*"],
+      "Resource": [
+        "*"
+      ],
       "Effect": "Allow"
     },
     {
@@ -216,27 +244,46 @@
         "fsx:DescribeStorageVirtualMachines",
         "fsx:DescribeVolumes",
         "fsx:ListTagsForResource",
-        "fsx:TagResource"
+        "fsx:TagResource",
+        "fsx:DescribeDataRepositoryAssociations"
       ],
-      "Resource": ["*"],
+      "Resource": [
+        "*"
+      ],
       "Effect": "Allow"
     },
     {
       "Sid": "CBT",
-      "Action": ["ebs:ListChangedBlocks", "ebs:ListSnapshotBlocks"],
-      "Resource": ["*"],
+      "Action": [
+        "ebs:ListChangedBlocks",
+        "ebs:ListSnapshotBlocks"
+      ],
+      "Resource": [
+        "*"
+      ],
       "Effect": "Allow"
     },
     {
       "Sid": "FLR",
-      "Action": ["ebs:ListSnapshotBlocks", "ebs:GetSnapshotBlock"],
-      "Resource": ["*"],
+      "Action": [
+        "ebs:ListSnapshotBlocks",
+        "ebs:GetSnapshotBlock"
+      ],
+      "Resource": [
+        "*"
+      ],
       "Effect": "Allow"
     },
     {
       "Sid": "SapHanaDB",
-      "Action": ["ssm:PutParameter", "ssm:GetParameter", "ssm:DeleteParameter"],
-      "Resource": ["*"],
+      "Action": [
+        "ssm:PutParameter",
+        "ssm:GetParameter",
+        "ssm:DeleteParameter"
+      ],
+      "Resource": [
+        "*"
+      ],
       "Effect": "Allow"
     }
   ]

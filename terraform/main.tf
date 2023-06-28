@@ -183,3 +183,37 @@ resource "aws_iam_role_policy" "main" {
   policy   = data.local_file.policies[each.value].content
 }
 
+# IAM Instance Profile
+
+resource "aws_iam_instance_profile" "main" {
+  name = "cpm-instance-profile"
+  role = aws_iam_role.cpm.id
+}
+
+# Create new role for CPM instance - create a trust relationship allows EC2 to assume the role
+
+resource "aws_iam_role" "cpm" {
+  name               = "cpm-role"
+  assume_role_policy = {
+    "Version"   : "2012-10-17",
+    "Statement" : [
+      {
+        "Action"    : "sts:AssumeRole",
+        "Effect"    : "Allow",
+        "Principal" : {
+          "Service" : "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+# Add policies to the role - from JSON file in policies/aws_cpm_instance_profile.json
+
+resource "aws_iam_role_policy" "cpm" {
+  name   = "cpm-role-policy"
+  role   = aws_iam_role.cpm.id
+  policy = data.local_file.cpm_instance_profile.content
+}
+
+

@@ -12,3 +12,7 @@ data "local_file" "assume_role_policy" {
 data "aws_availability_zones" "available" {
   state = "available"
 }
+
+data "local_file" "cpm_instance_profile" {
+  filename = "${path.module}/policies/aws_cpm_instance_profile.json"
+}

@@ -505,7 +505,7 @@ Resources:
             Principal:
               AWS:
                 !Sub
-                  - "arn:aws:iam::${AssumingAccountId}:root"
+                  - "arn:${AWS::Partition}:iam::${AssumingAccountId}:root"
                   - { AssumingAccountId: !Ref AWSAssumingAccountId}
             Action:
               - "sts:AssumeRole"
