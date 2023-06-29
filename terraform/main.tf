@@ -30,6 +30,7 @@ resource "aws_flow_log" "main" {
 resource "aws_cloudwatch_log_group" "flow_logs" {
   name              = "n2ws-flow-logs"
   retention_in_days = 14
+  skip_destroy      = true
 }
 
 resource "aws_iam_role" "flow_logs" {
