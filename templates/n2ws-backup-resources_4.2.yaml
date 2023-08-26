@@ -1,0 +1,546 @@
+Parameters:
+  AWSAssumingAccountId: 
+    Type: String
+    Default: '604349774081' # cloud-data-solutions AWS account
+    Description: Enter the account id for the AWS Account that will assume the n2ws_role. The default Id is the cloud-data-solutions account id.
+  ExternalId: 
+    Type: String
+    Description: >-
+      (REQUIRED) The external ID is a STRING of data that can be passed to the AssumeRole API of the Security Token Service (STS)
+  EnableN2wsS3BucketRepo:
+    Type: String
+    Default: false
+    AllowedValues:
+      - true
+      - false
+    Description: >-
+      (Optional) Enter an S3 Bucket name to be used as the N2WS S3 Backup Repository
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      -
+        Label:
+          default: "N2WS IAM Role Paramaters"
+        Parameters:
+          - AWSAssumingAccountId
+          - ExternalId
+      -
+        Label:
+          default: "N2WS S3 Backup Repository"
+        Parameters:
+          - EnableN2wsS3BucketRepo
+Conditions: 
+  EnableN2wsS3BucketRepoCondition: !Equals [ !Ref EnableN2wsS3BucketRepo, true ]
+Resources:
+  S3Bucket:
+    Condition: EnableN2wsS3BucketRepoCondition
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: Private
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true     
+      Tags:
+        - Key: "Name"
+          Value: "n2ws S3 Backup repo"
+  N2WSManagedPolicyBYOL1:
+    Type: AWS::IAM::ManagedPolicy
+    Properties: 
+      Description: n2ws_aws_permissions_enterprise_BYOL_1 version 4.2
+      ManagedPolicyName: n2ws_aws_permissions_enterprise_BYOL_1
+      Path: /
+      PolicyDocument: 
+        Version: 2012-10-17
+        Statement:
+          - Sid: BackupCore
+            Action:
+              - iam:SimulatePrincipalPolicy
+              - iam:GetAccountAuthorizationDetails
+              - iam:ListUsers
+              - iam:ListAccessKeys
+              - iam:GetAccountAuthorizationDetails
+              - iam:ListUserPolicies
+              - iam:ListAttachedRolePolicies
+              - iam:ListAttachedUserPolicies
+              - iam:ListAttachedGroupPolicies
+              - iam:ListGroupPolicies
+              - iam:ListGroupsForUser
+              - iam:GetRole
+              - iam:ListInstanceProfiles
+              - ec2:CopySnapshot
+              - ec2:CreateSnapshot
+              - ec2:CreateSnapshots
+              - ec2:CreateTags
+              - ec2:DeleteSnapshot
+              - ec2:DescribeAddresses
+              - ec2:DescribeAvailabilityZones
+              - ec2:DescribeImageAttribute
+              - ec2:DescribeImages
+              - ec2:DescribeInstanceAttribute
+              - ec2:DescribeInstanceStatus
+              - ec2:DescribeInstances
+              - ec2:DescribeInstanceTypes
+              - ec2:DescribeInstanceTypeOfferings
+              - ec2:DescribeKeyPairs
+              - ec2:DescribePlacementGroups
+              - ec2:DescribeRegions
+              - ec2:DescribeSecurityGroups
+              - ec2:DescribeSnapshotAttribute
+              - ec2:DescribeSnapshots
+              - ec2:DescribeSubnets
+              - ec2:DescribeTags
+              - ec2:DescribeVolumeAttribute
+              - ec2:DescribeVolumeStatus
+              - ec2:DescribeVolumes
+              - ec2:ModifySnapshotAttribute
+              - ec2:ResetSnapshotAttribute
+              - ec2:CreateImage
+              - ec2:CopyImage
+              - ec2:DescribeVpcs
+              - ec2:ModifyImageAttribute
+              - ec2:RegisterImage
+              - ec2:DeregisterImage
+              - ec2:AuthorizeSecurityGroupEgress
+              - ec2:AuthorizeSecurityGroupIngress
+              - rds:DescribeDBInstances
+              - rds:DescribeDBClusters
+              - rds:DescribeDBClusterParameterGroups
+              - rds:DescribeDBClusterParameters
+              - rds:DescribeDBClusterSnapshots
+              - rds:DescribeDBParameterGroups
+              - rds:DescribeDBParameters
+              - rds:DescribeDBSnapshots
+              - rds:DescribeDBSubnetGroups
+              - rds:DescribeOptionGroups
+              - rds:DescribeDBParameterGroups
+              - rds:DescribeDBClusterParameterGroups
+              - rds:DescribeDBEngineVersions
+              - redshift:DescribeClusterParameterGroups
+              - redshift:DescribeClusterParameters
+              - redshift:DescribeClusterSnapshots
+              - redshift:DescribeClusterSubnetGroups
+              - redshift:DescribeClusters
+              - redshift:DescribeTags
+              - dynamodb:DescribeTimeToLive
+              - dynamodb:DescribeTable
+              - dynamodb:DescribeBackup
+              - dynamodb:ListTables
+              - dynamodb:ListTagsOfResource
+              - dynamodb:CreateTable
+              - dynamodb:ListBackups
+              - dynamodb:Scan
+              - kms:DescribeKey
+              - kms:ListKeys
+              - kms:ListAliases
+              - kms:CreateGrant
+              - kms:GenerateDataKeyWithoutPlaintext
+              - sts:AssumeRole
+              - cloudwatch:GetMetricStatistics
+              - ec2:DescribeNetworkInterfaces
+              - ec2:AttachNetworkInterface
+              - ec2:DescribeNetworkInterfaceAttribute
+              - ec2:DescribeNetworkInterfacePermissions
+              - ses:SendRawEmail
+              - ses:ListVerifiedEmailAddresses
+              - ses:VerifyEmailAddress
+              - ses:GetIdentityVerificationAttributes
+              - ssm:GetParametersByPath
+              - ssm:SendCommand
+              - ssm:GetCommandInvocation
+              - ses:GetAccount
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: RDSBackup
+            Action:
+              - rds:CreateDBSnapshot
+              - rds:CreateDBClusterSnapshot
+              - rds:DeleteDBSnapshot
+              - rds:DeleteDBClusterSnapshot
+              - rds:AddTagsToResource
+              - rds:ListTagsForResource
+              - rds:CopyDBSnapshot
+              - rds:CopyDBClusterSnapshot
+              - rds:CreateDBInstance
+              - rds:DeleteDBCluster
+              - rds:DeleteDBInstance
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: Recovery
+            Action:
+              - ec2:AllocateAddress
+              - ec2:AssociateAddress
+              - ec2:AttachVolume
+              - ec2:CreateVolume
+              - ec2:DeleteVolume
+              - ec2:DetachVolume
+              - ec2:ModifyInstanceAttribute
+              - ec2:ModifyVolumeAttribute
+              - ec2:RunInstances
+              - ec2:StartInstances
+              - ec2:StopInstances
+              - iam:PassRole
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: RecoveryDR
+            Action:
+              - kms:ReEncryptFrom
+              - kms:ReEncryptTo
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: RecoveryRDS
+            Action:
+              - rds:RestoreDBInstanceFromDBSnapshot
+              - rds:RestoreDBClusterFromSnapshot
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: Notification
+            Action:
+              - sns:CreateTopic
+              - sns:GetTopicAttributes
+              - sns:Publish
+              - sns:SetTopicAttributes
+              - sns:Subscribe
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: CrossAccountOperations
+            Action:
+              - rds:ModifyDBSnapshotAttribute
+              - rds:ModifyDBClusterSnapshotAttribute
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: RedshiftOperations
+            Action:
+              - redshift:CopyClusterSnapshot
+              - redshift:CreateClusterSnapshot
+              - redshift:CreateTags
+              - redshift:DeleteTags
+              - redshift:DeleteClusterSnapshot
+              - redshift:RestoreFromClusterSnapshot
+              - redshift:DeleteCluster
+              - redshift:AuthorizeSnapshotAccess
+              - redshift:RevokeSnapshotAccess
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: BackupDynamoDB
+            Action:
+              - dynamodb:DeleteBackup
+              - dynamodb:GetItem
+              - dynamodb:DeleteItem
+              - dynamodb:PutItem
+              - dynamodb:UpdateItem
+              - dynamodb:DescribeContinuousBackups
+              - dynamodb:CreateBackup
+              - dynamodb:Query
+              - dynamodb:BatchWriteItem
+              - dynamodb:ListTagsOfResource
+            Resource: "*"
+            Effect: Allow
+          - Sid: RecoveryDynamoDB
+            Action:
+              - dynamodb:TagResource
+              - dynamodb:ListTables
+              - dynamodb:UntagResource
+              - dynamodb:RestoreTableFromBackup
+            Resource:
+              - "*"
+            Effect: Allow
+  N2WSManagedPolicyBYOL2:
+    Type: AWS::IAM::ManagedPolicy
+    Properties: 
+      Description: n2ws_aws_permissions_enterprise_BYOL_2 version 4.2
+      ManagedPolicyName: n2ws_aws_permissions_enterprise_BYOL_2
+      Path: /
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: VPC
+            Action:
+              - cloudformation:ValidateTemplate
+              - cloudformation:CreateStack
+              - cloudformation:DeleteStack
+              - cloudformation:DescribeStacks
+              - cloudformation:DescribeStackEvents
+              - ec2:DescribeVpcAttribute
+              - ec2:DescribeDhcpOptions
+              - ec2:DescribeInternetGateways
+              - ec2:DescribeEgressOnlyInternetGateways
+              - ec2:DescribeNetworkAcls
+              - ec2:DescribeRouteTables
+              - ec2:DescribeVpnGateways
+              - ec2:CreateVpc
+              - ec2:CreateDhcpOptions
+              - ec2:ModifyVpcAttribute
+              - ec2:CreateSecurityGroup
+              - ec2:CreateSubnet
+              - ec2:CreateNetworkAcl
+              - ec2:CreateRouteTable
+              - ec2:AssociateVpcCidrBlock
+              - ec2:AssociateDhcpOptions
+              - ec2:CreateNetworkAclEntry
+              - ec2:RevokeSecurityGroupEgress
+              - ec2:ModifySubnetAttribute
+              - ec2:ReplaceNetworkAclAssociation
+              - ec2:CreateInternetGateway
+              - ec2:AttachInternetGateway
+              - ec2:CreateEgressOnlyInternetGateway
+              - ec2:AssociateRouteTable
+              - ec2:CreateRoute
+              - ec2:CreateVpnGateway
+              - ec2:AttachVpnGateway
+              - ec2:EnableVgwRoutePropagation
+              - s3:ListBucket
+              - s3:PutObject
+              - s3:ListAllMyBuckets
+              - ec2:DescribeTransitGatewayPeeringAttachments
+              - ec2:DescribeTransitGateways
+              - ec2:SearchTransitGatewayRoutes
+              - ec2:DescribeTransitGatewayRouteTables
+              - ec2:DescribeTransitGatewayMulticastDomains
+              - ec2:SearchTransitGatewayMulticastGroups
+              - ec2:GetTransitGatewayRouteTableAssociations
+              - ec2:DescribeVpnConnections
+              - ec2:DescribeTransitGatewayConnects
+              - ec2:DescribeCustomerGateways
+              - ec2:DescribeTransitGatewayAttachments
+              - ec2:GetTransitGatewayRouteTablePropagations
+              - ec2:DescribeTransitGatewayVpcAttachments
+              - ec2:GetTransitGatewayMulticastDomainAssociations
+              - ec2:CreateTransitGatewayRouteTable
+              - ec2:CreateTransitGateway
+              - ec2:RegisterTransitGatewayMulticastGroupSources
+              - ec2:RegisterTransitGatewayMulticastGroupMembers
+              - ec2:CreateTransitGatewayMulticastDomain
+              - ec2:AssociateTransitGatewayMulticastDomain
+              - ec2:CreateCustomerGateway
+              - ec2:CreateTransitGatewayRoute
+              - ec2:CreateTransitGatewayVpcAttachment
+              - ec2:CreateVpnConnection
+              - ec2:CreateTransitGatewayConnect
+              - ec2:DescribeTransitGatewayConnectPeers
+              - ec2:CreateTransitGatewayPeeringAttachment
+              - ec2:GetTransitGatewayPrefixListReferences
+              - ec2:CreateVpnConnectionRoute
+              - ec2:ModifyNetworkInterfaceAttribute
+              - ec2:CreateNetworkInterface
+              - ec2:DescribeNatGateways
+              - ec2:CreateNatGateway
+              - ec2:DescribeVpcPeeringConnections
+              - ec2:CreateVpcPeeringConnection
+              - ec2:AcceptVpcPeeringConnection
+              - ec2:AssociateTransitGatewayRouteTable
+              - ec2:EnableTransitGatewayRouteTablePropagation
+              - ec2:CreateTransitGatewayPrefixListReference
+              - ec2:DescribeManagedPrefixLists
+              - ec2:GetManagedPrefixListEntries
+              - ec2:CreateManagedPrefixList
+              - ec2:GetManagedPrefixListAssociations
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: CopyToS3
+            Action:
+              - s3:ReplicateObject
+              - s3:ListAllMyBuckets
+              - s3:AbortMultipartUpload
+              - s3:ListBucket
+              - s3:ListMultipartUploadParts
+              - s3:GetBucketLocation
+              - s3:GetBucketVersioning
+              - s3:ListBucketVersions
+              - s3:GetBucketObjectLockConfiguration
+              - s3:GetEncryptionConfiguration
+              - s3:PutObject*
+              - s3:GetObject*
+              - s3:DeleteObject*
+              - kms:GenerateDataKey
+              - kms:Decrypt
+              - ebs:ListChangedBlocks
+              - ebs:ListSnapshotBlocks
+              - ebs:GetSnapshotBlock
+              - rds:StartExportTask
+              - rds:DescribeExportTasks
+              - rds:CancelExportTask
+              - rds:ModifyDBInstance
+              - rds-db:connect
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: Archive
+            Action:
+              - s3:RestoreObject
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: CPMWorkerTermination
+            Action: ec2:TerminateInstances
+            Resource:
+              - "*"
+            Effect: Allow
+            Condition:
+              StringEquals:
+                ec2:ResourceTag/Name: CPMWorkerMachine
+          - Sid: ResourceControl
+            Action:
+              - ec2:StartInstances
+              - ec2:StopInstances
+              - rds:StartDBInstance
+              - rds:StopDBInstance
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: EFS
+            Action:
+              - elasticfilesystem:DescribeFileSystems
+              - elasticfilesystem:DescribeTags
+              - elasticfilesystem:CreateTags
+              - elasticfilesystem:TagResource
+              - elasticfilesystem:DescribeLifecycleConfiguration
+              - elasticfilesystem:PutLifecycleConfiguration
+              - elasticfilesystem:UpdateFileSystem
+              - elasticfilesystem:PutBackupPolicy
+              - elasticfilesystem:DescribeMountTargets
+              - elasticfilesystem:CreateMountTarget
+              - elasticfilesystem:DescribeAccessPoints
+              - elasticfilesystem:CreateAccessPoint
+              - elasticfilesystem:DescribeMountTargetSecurityGroups
+              - backup:StartBackupJob
+              - backup:DescribeBackupJob
+              - backup:ListBackupJobs
+              - backup:ListBackupVaults
+              - backup:GetRecoveryPointRestoreMetadata
+              - backup:ListTags
+              - backup:StartRestoreJob
+              - backup:DescribeRestoreJob
+              - backup:ListRestoreJobs
+              - backup:DeleteRecoveryPoint
+              - backup:DescribeRecoveryPoint
+              - backup:UpdateRecoveryPointLifecycle
+              - backup:StartCopyJob
+              - backup:DescribeCopyJob
+              - iam:ListRoles
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: CostExplorer
+            Action:
+              - pricing:GetProducts
+              - ec2:GetConsoleOutput
+              - ce:GetCostAndUsage
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: SupportedServiceRegions
+            Action:
+              - ssm:GetParametersByPath
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: S3Sync
+            Action:
+              - s3:DeleteObject
+              - s3:GetBucketLocation
+              - s3:GetObject
+              - s3:GetObjectTagging
+              - s3:ListAllMyBuckets
+              - s3:ListBucket
+              - s3:PutObject
+              - s3:PutObjectAcl
+              - s3:PutObjectTagging
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: FSX
+            Action:
+              - ds:DescribeDirectories
+              - fsx:CreateBackup
+              - fsx:CopyBackup
+              - fsx:CreateFileSystem
+              - fsx:CreateFileSystemFromBackup
+              - fsx:CreateStorageVirtualMachine
+              - fsx:CreateVolumeFromBackup
+              - fsx:DeleteBackup
+              - fsx:DescribeBackups
+              - fsx:DescribeFileSystems
+              - fsx:DescribeStorageVirtualMachines
+              - fsx:DescribeVolumes
+              - fsx:ListTagsForResource
+              - fsx:TagResource
+              - fsx:DescribeDataRepositoryAssociations
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: CBT
+            Action:
+              - ebs:ListChangedBlocks
+              - ebs:ListSnapshotBlocks
+              - ssm:ListCommandInvocations
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: FLR
+            Action:
+              - ebs:ListSnapshotBlocks
+              - ebs:GetSnapshotBlock
+            Resource:
+              - "*"
+            Effect: Allow
+  N2WSManagedPolicyBYOL3:
+    Type: AWS::IAM::ManagedPolicy
+    Properties: 
+      Description: n2ws_aws_permissions_enterprise_BYOL_2 version 4.2
+      ManagedPolicyName: n2ws_aws_permissions_enterprise_BYOL_3
+      Path: /
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: SapHanaDB
+            Action:
+              - ssm:PutParameter
+              - ssm:GetParameter
+              - ssm:DeleteParameter
+            Resource:
+              - "*"
+            Effect: Allow
+          - Sid: SecretsManager
+            Action:
+              - secretsmanager:GetSecretValue
+            Resource:
+              - "*"
+            Effect: Allow
+  N2WSRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      RoleName: n2ws_role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          -
+            Effect: "Allow"
+            Principal:
+              AWS:
+                !Sub
+                  - "arn:${AWS::Partition}:iam::${AssumingAccountId}:root"
+                  - { AssumingAccountId: !Ref AWSAssumingAccountId}
+            Action:
+              - "sts:AssumeRole"
+            Condition:
+              StringEquals:
+                'sts:ExternalId': !Ref ExternalId
+      ManagedPolicyArns:
+        - !Ref N2WSManagedPolicyBYOL1
+        - !Ref N2WSManagedPolicyBYOL2
+        - !Ref N2WSManagedPolicyBYOL3
