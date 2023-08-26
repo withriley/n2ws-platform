@@ -16,6 +16,7 @@
         "iam:ListGroupPolicies",
         "iam:ListGroupsForUser",
         "iam:GetRole",
+        "iam:ListInstanceProfiles",
         "ec2:CopySnapshot",
         "ec2:CreateSnapshot",
         "ec2:CreateSnapshots",
@@ -29,6 +30,7 @@
         "ec2:DescribeInstanceStatus",
         "ec2:DescribeInstances",
         "ec2:DescribeInstanceTypes",
+        "ec2:DescribeInstanceTypeOfferings",
         "ec2:DescribeKeyPairs",
         "ec2:DescribePlacementGroups",
         "ec2:DescribeRegions",
@@ -196,8 +198,12 @@
         "redshift:CopyClusterSnapshot",
         "redshift:CreateClusterSnapshot",
         "redshift:CreateTags",
+        "redshift:DeleteTags",
         "redshift:DeleteClusterSnapshot",
-        "redshift:RestoreFromClusterSnapshot"
+        "redshift:RestoreFromClusterSnapshot",
+        "redshift:DeleteCluster",
+        "redshift:AuthorizeSnapshotAccess",
+        "redshift:RevokeSnapshotAccess"
       ],
       "Resource": [
         "*"
